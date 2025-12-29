@@ -1,0 +1,11 @@
+communes:
+#  - code_insee: "34003"
+#   nom: "Agde"
+#  - code_insee: "34101"
+#    nom: "Florensac"
+#  - code_insee: "34199"
+#    nom: "Pezenas"
+#  - code_insee: "34300"
+#    nom: "Servian"
+  - code_insee: "34301"
+    nom: "Sete"

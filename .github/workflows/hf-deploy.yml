@@ -1,0 +1,44 @@
+name: Deploy to Hugging Face
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Sync to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_REPO: ${{ secrets.HF_REPO }}
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_REPO" ]; then
+            echo "HF_TOKEN and HF_REPO secrets are required."
+            exit 1
+          fi
+          git lfs install
+          git clone https://oauth2:${HF_TOKEN}@huggingface.co/spaces/${HF_REPO} hf-space
+          rsync -av --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.venv' \
+            --exclude '__pycache__' \
+            ./ hf-space/
+          cd hf-space
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+            exit 0
+          fi
+          git commit -m "Sync from GitHub"
+          git push

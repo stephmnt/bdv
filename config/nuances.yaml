@@ -1,0 +1,14 @@
+# Mapping des nuances politiques vers les blocs.
+#
+# - base_mapping: chemin vers le CSV historique (optionnel).
+# - overrides: liste d'ajouts/surcharges pour des nuances absentes ou nouvelles.
+# - mapping: mapping complet si vous ne voulez pas utiliser base_mapping.
+
+base_mapping: data/mapping_candidats_blocs.csv
+
+# Exemple d'ajout/surcharge :
+# overrides:
+#   - code_candidature: "XYZ"
+#     nom_candidature: "Exemple de nuance"
+#     blocs: [gauche_modere, centre]
+overrides: []

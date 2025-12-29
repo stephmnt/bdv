@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: elections_postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: elections_pgadmin
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sete.fr
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    profiles:
+      - admin
+
+volumes:
+  pgdata:
+  pgadmin_data:

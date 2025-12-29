@@ -1,0 +1,344 @@
+14_EU.csv:
+  code_bv_cols:
+  - Code de la commune
+  - N° de bureau de vote
+  date_scrutin: '2014-05-25'
+  rename_map:
+    Code nuance du candidat: code_candidature
+    ExprimÃ©s: exprimes
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom du candidat: nom_candidature
+    Nombre de voix du candidat: voix
+    Prénom du candidat: nom_candidature
+    Voix: voix
+    Votants: votants
+  tour_column: N° tour
+  type_scrutin: europeennes
+14_MN14_T1T2.csv:
+  code_bv_cols:
+  - Code commune
+  - N° de bureau de vote
+  date_scrutin: '2014-03-23'
+  rename_map:
+    Code nuance de la liste: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom du candidat tête de liste: nom_candidature
+    Nombre de voix: voix
+    Prénom du candidat  tête de liste: nom_candidature
+    Votants: votants
+  tour_column: N° tour
+  type_scrutin: municipales
+17_L_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2017-06-11'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: legislatives
+17_L_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2017-06-18'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: legislatives
+17_PR_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2017-04-23'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code nuance du candidat: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: presidentielles
+17_PR_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2017-05-07'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code nuance du candidat: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: presidentielles
+19_EU.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2019-05-26'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom Tête de Liste: nom_candidature
+    Nuance Liste: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: europeennes
+20_MN_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code B.Vote
+  date_scrutin: '2020-03-15'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code Nuance: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Liste: nom_candidature
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  sep: ;
+  tour: 1
+  type_scrutin: municipales
+20_MN_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code B.Vote
+  date_scrutin: '2020-06-28'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code Nuance: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Liste: nom_candidature
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: municipales
+21_DEP_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2021-06-20'
+  rename_map:
+    Abstentions: abstentions
+    Binôme: nom_candidature
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: departementales
+21_DEP_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2021-06-27'
+  rename_map:
+    Abstentions: abstentions
+    Binôme: nom_candidature
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: departementales
+21_REG_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2021-06-20'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Libellé Abrégé Liste: nom_candidature
+    Nuance Liste: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: regionales
+21_REG_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2021-06-27'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Libellé Abrégé Liste: nom_candidature
+    Nuance Liste: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: regionales
+22_L_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2022-06-12'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: legislatives
+22_L_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2022-06-19'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuance: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: legislatives
+22_PR_T1.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2022-04-10'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code nuance du candidat: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: presidentielles
+22_PR_T2.csv:
+  code_bv_cols:
+  - Code de la commune
+  - Code du b.vote
+  date_scrutin: '2022-04-24'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Code nuance du candidat: code_candidature
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Nom: nom_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: presidentielles
+24_EU.csv:
+  code_bv_cols:
+  - Code commune
+  - Code BV
+  date_scrutin: '2024-06-09'
+  rename_map:
+    Abstentions: abstentions
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Libellé abrégé de liste 1: nom_candidature
+    Nuance liste 1: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Voix 1: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: europeennes
+24_L_T1.csv:
+  code_bv_cols:
+  - Code commune
+  - Code BV
+  date_scrutin: '2024-06-30'
+  rename_map:
+    Abstentions: abstentions
+    Binôme: nom_candidature
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Libellé Abrégé Liste: nom_candidature
+    Nuance Liste: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 1
+  type_scrutin: legislatives
+24_L_T2.csv:
+  code_bv_cols:
+  - Code commune
+  - Code BV
+  date_scrutin: '2024-07-07'
+  rename_map:
+    Abstentions: abstentions
+    Binôme: nom_candidature
+    Blancs: blancs
+    Exprimés: exprimes
+    Inscrits: inscrits
+    Libellé Abrégé Liste: nom_candidature
+    Nuance Liste: code_candidature
+    Nuls: nuls
+    Voix: voix
+    Votants: votants
+  tour: 2
+  type_scrutin: legislatives

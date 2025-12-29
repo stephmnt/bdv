@@ -1,0 +1,61 @@
+code_candidature;nom_candidature;bloc_1;bloc_2;bloc_3
+NC;Nuance non communiquee;centre;;
+LDIV;Divers;centre;;
+DIV;Divers;centre;;
+LDVD;Divers droite;droite_modere;droite_dure
+LDVG;Divers gauche;gauche_modere;
+LUG;Union de la gauche;;gauche_modere
+LUD;Union de la droite;droite;droite_modere
+LFN;Front national;extreme_droite;;
+LEXG;Extreme gauche;extreme_gauche;;
+LSOC;Parti socialiste;gauche_modere;
+LUMP;Union pour un mouvement populaire;droite_modere;
+LNC;Nouveau centre;centre;;
+LFG;Front de gauche;gauche_dure;
+LVEC;Europe Ecologie Les Verts;gauche_modere;;
+LUDI;Union des democrates et independants;centre;droite_modere
+LDVC;Divers centre;centre;;
+LCOM;Parti communiste;gauche_dure;
+LRN;Rassemblement national;extreme_droite;;
+LUC;Union du centre;centre;;
+LPG;Parti de gauche;gauche_dure;
+LMDM;Mouvement democrate;centre;;
+LLR;Les republicains;droite_modere;
+LEXD;Extreme droite;extreme_droite;;
+LREM;La republique en marche;centre;droite_modere
+LFI;La France insoumise;gauche_dure;;
+LECO;Ecologistes;gauche_modere;;
+LREG;Regionalistes;centre;;
+LGJ;Gilets jaunes;;
+LRDG;Radicaux de gauche;gauche_modere;centre
+LDLF;Debout la France;droite_dure;
+RN;Rassemblement national;extreme_droite;;
+LR;Les republicains;droite_modere;centre
+EELV;Europe Ecologie Les Verts;gauche_modere;;
+PS;Parti socialiste;gauche_modere;;
+UDI;Union des democrates et independants;centre;droite_modere
+PRG;Parti radical de gauche;gauche_modere;centre
+DVD;Divers droite;droite_modere;droite_dure
+DVG;Divers gauche;gauche_modere;
+EXD;Extreme droite;extreme_droite;;
+EXG;Extreme gauche;extreme_gauche;;
+FN;Front national;extreme_droite;;
+DLF;Debout la France;droite_dure;
+REM;La republique en marche;centre;droite_modere
+ENS;Ensemble;centre;droite_modere
+LENS;Ensemble;centre;droite_modere
+REC;Reconquete;extreme_droite;;
+LREC;Reconquete;extreme_droite;;
+DSV;Divers souverainiste;droite_dure;
+LDSV;Divers souverainiste;droite_dure;
+LUGE;Union de la gauche elargie;gauche_modere;
+COM;Parti communiste;gauche_dure;
+SOC;Parti socialiste;gauche_modere;;
+FI;La France insoumise;gauche_dure;;
+ECO;Ecologistes;gauche_modere;;
+DXG;Divers extreme gauche;extreme_gauche;;
+NUP;Nupes;gauche_dure;gauche_modere
+BC-COM;Binome communiste;gauche_dure;
+BC-DVD;Binome divers droite;droite_modere;droite_dure
+BC-ECO;Binome ecologiste;gauche_modere;;
+BC-RN;Binome rassemblement national;extreme_droite;;
