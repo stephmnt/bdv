@@ -33,7 +33,13 @@ jobs:
             --exclude '.github' \
             --exclude '.venv' \
             --exclude '__pycache__' \
-            ./ hf-space/
+            ./ hf-space/ || {
+              code=$?
+              if [ "$code" -ne 24 ]; then
+                exit "$code"
+              fi
+              echo "rsync warning (code 24) ignored."
+            }
           cd hf-space
           git add -A
           if git diff --cached --quiet; then
