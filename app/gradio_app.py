@@ -1305,6 +1305,8 @@ def create_interface() -> gr.Blocks:
             # Prévision Municipales — Ville de Sète
             Choisissez un bureau de vote et une élection cible.  
             Le modèle estime un volume par catégorie politique, ainsi que les abstentions, blancs et nuls.
+
+            Auteur : [Stéphane Manet](https://manet-conseil.fr) - [Linkedin](https://www.linkedin.com/in/stephanemanet) | [GitHub](https://github.com/stephmnt)
             """
         )
         with gr.Tabs():
