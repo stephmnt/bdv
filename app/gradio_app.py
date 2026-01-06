@@ -110,6 +110,14 @@ INTERVAL_BANDS = {
     "90% (p05-p95)": ("q05", "q95"),
 }
 NEUTRAL_MARGIN_SHARE = 0.10
+TYPE_HISTORY_BLEND = {
+    "presidentielles": 0.4,
+    "legislatives": 0.35,
+    "europeennes": 0.3,
+    "regionales": 0.3,
+    "departementales": 0.3,
+    "municipales": 0.2,
+}
 
 try:
     from numpy import RankWarning as NP_RANK_WARNING  # type: ignore[attr-defined]
@@ -209,6 +217,41 @@ def build_interval_chart(
     plt.ylabel(ylabel)
     plt.tight_layout()
     return plt
+
+
+def blend_with_type_history(
+    preds_by_cat: Dict[str, float],
+    row: pd.Series,
+    target_type: str,
+) -> Dict[str, float]:
+    base_weight = TYPE_HISTORY_BLEND.get(str(target_type).lower(), 0.0)
+    if base_weight <= 0:
+        return preds_by_cat
+    available = 0
+    hist_vals: Dict[str, float | None] = {}
+    for cat in CANDIDATE_CATEGORIES:
+        val = row.get(f"prev_share_type_lag1_{cat}")
+        if val is not None and not pd.isna(val):
+            hist_vals[cat] = float(val)
+            available += 1
+        else:
+            hist_vals[cat] = None
+    if available == 0:
+        return preds_by_cat
+    weight = base_weight * (available / len(CANDIDATE_CATEGORIES))
+    blended: Dict[str, float] = {}
+    for cat in CANDIDATE_CATEGORIES:
+        base = float(preds_by_cat.get(cat, 0.0))
+        hist = hist_vals.get(cat)
+        if hist is None:
+            blended[cat] = base
+        else:
+            blended[cat] = (1 - weight) * base + weight * hist
+    total = sum(blended.values())
+    if total > 0:
+        for cat in blended:
+            blended[cat] /= total
+    return blended
 
 
 def apply_transfers(
@@ -1091,6 +1134,7 @@ class PredictorBackend:
         preds_share = preds.flatten()
 
         preds_by_cat = {cat: float(preds_share[idx]) for idx, cat in enumerate(CANDIDATE_CATEGORIES)}
+        preds_by_cat = blend_with_type_history(preds_by_cat, row.iloc[0], target_type)
         ordered = ordered_categories()
         share_vec = np.array([preds_by_cat.get(cat, 0.0) for cat in ordered], dtype=float)
 
@@ -1306,7 +1350,7 @@ def create_interface() -> gr.Blocks:
             Choisissez un bureau de vote et une élection cible.  
             Le modèle estime un volume par catégorie politique, ainsi que les abstentions, blancs et nuls.
 
-            Auteur : [Stéphane Manet](https://manet-conseil.fr) - [Linkedin](https://www.linkedin.com/in/stephanemanet) | [GitHub](https://github.com/stephmnt)
+            Auteur : [Stéphane Manet](https://manet-conseil.fr) - [Linkedin](https://www.linkedin.com/in/stephanemanet) - [GitHub](https://github.com/stephmnt)
             """
         )
         with gr.Tabs():

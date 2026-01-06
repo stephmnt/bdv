@@ -5,7 +5,7 @@ DIV;Divers;centre;;
 LDVD;Divers droite;droite_modere;droite_dure
 LDVG;Divers gauche;gauche_modere;
 LUG;Union de la gauche;;gauche_modere
-LUD;Union de la droite;droite;droite_modere
+LUD;Union de la droite;droite_dure;droite_modere
 LFN;Front national;extreme_droite;;
 LEXG;Extreme gauche;extreme_gauche;;
 LSOC;Parti socialiste;gauche_modere;

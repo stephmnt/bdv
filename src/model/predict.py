@@ -20,6 +20,40 @@ from src.features.build_features import (
 )
 
 LOGGER = logging.getLogger(__name__)
+TYPE_HISTORY_BLEND = {
+    "presidentielles": 0.4,
+    "legislatives": 0.35,
+    "europeennes": 0.3,
+    "regionales": 0.3,
+    "departementales": 0.3,
+    "municipales": 0.2,
+}
+
+
+def blend_with_type_history(
+    preds: np.ndarray,
+    feature_df: pd.DataFrame,
+    target_type: str,
+) -> np.ndarray:
+    base_weight = TYPE_HISTORY_BLEND.get(str(target_type).lower(), 0.0)
+    if base_weight <= 0 or preds.size == 0:
+        return preds
+    hist_cols = [f"prev_share_type_lag1_{cat}" for cat in CANDIDATE_CATEGORIES]
+    if not all(col in feature_df.columns for col in hist_cols):
+        return preds
+    hist_vals = feature_df[hist_cols].to_numpy(dtype=float)
+    mask = np.isnan(hist_vals)
+    available = (~mask).sum(axis=1).astype(float)
+    if np.nanmax(available) == 0:
+        return preds
+    ratio = (available / len(CANDIDATE_CATEGORIES)).reshape(-1, 1)
+    weights = base_weight * ratio
+    hist_vals = np.where(mask, preds, hist_vals)
+    blended = (1 - weights) * preds + weights * hist_vals
+    blended = np.clip(blended, 0, None)
+    sums = blended.sum(axis=1, keepdims=True)
+    sums[sums == 0] = 1
+    return blended / sums
 
 
 def filter_history(df: pd.DataFrame, target_year: int, commune_code: str | None) -> pd.DataFrame:
@@ -141,6 +175,11 @@ def predict(
     sums = preds.sum(axis=1, keepdims=True)
     sums[sums == 0] = 1
     preds = preds / sums
+    target_type = None
+    if "election_type" in feature_df.columns and not feature_df.empty:
+        target_type = str(feature_df["election_type"].iloc[0])
+    if target_type:
+        preds = blend_with_type_history(preds, feature_df, target_type)
     preds_pct = preds * 100
 
     rows = []
