@@ -1,5 +1,5 @@
 code_candidature;nom_candidature;bloc_1;bloc_2;bloc_3
-NC;Nuance non communiquee;centre;;
+NC;Nuance non communiquee;;;
 LDIV;Divers;centre;;
 DIV;Divers;centre;;
 LDVD;Divers droite;droite_modere;droite_dure
@@ -59,3 +59,39 @@ BC-COM;Binome communiste;gauche_dure;
 BC-DVD;Binome divers droite;droite_modere;droite_dure
 BC-ECO;Binome ecologiste;gauche_modere;;
 BC-RN;Binome rassemblement national;extreme_droite;;
+ANNE HIDALGO;Anne Hidalgo;gauche_modere;;
+ARTHAUD;Nathalie Arthaud;extreme_gauche;;
+ASSELINEAU;Francois Asselineau;droite_dure;;
+BENOI T HAMON;Benoit Hamon;gauche_modere;;
+BENOIT HAMON;Benoit Hamon;gauche_modere;;
+CHEMINADE;Jacques Cheminade;gauche_dure;;
+DUPONT AIGNAN;Nicolas Dupont Aignan;droite_dure;;
+EMMANUEL MACRON;Emmanuel Macron;centre;;
+ERIC ZEMMOUR;Eric Zemmour;extreme_droite;;
+FABIEN ROUSSEL;Fabien Roussel;gauche_dure;;
+FILLON;Francois Fillon;droite_modere;;
+FRANCOIS ASSELINEAU;Francois Asselineau;droite_dure;;
+FRANCOIS FILLON;Francois Fillon;droite_modere;;
+FRANI OIS ASSELINEAU;Francois Asselineau;droite_dure;;
+FRANI OIS FILLON;Francois Fillon;droite_modere;;
+HAMON;Benoit Hamon;gauche_modere;;
+HIDALGO;Anne Hidalgo;gauche_modere;;
+JACQUES CHEMINADE;Jacques Cheminade;gauche_dure;;
+JADOT;Yannick Jadot;gauche_modere;;
+JEAN LASSALLE;Jean Lassalle;centre;;
+JEAN LUC MELENCHON;Jean Luc Melenchon;gauche_dure;;
+JEAN LUC MI LENCHON;Jean Luc Melenchon;gauche_dure;;
+LASSALLE;Jean Lassalle;centre;;
+LE PEN;Le Pen;extreme_droite;;
+MACRON;Emmanuel Macron;centre;;
+MARINE LE PEN;Marine Le Pen;extreme_droite;;
+MELENCHON;Jean Luc Melenchon;gauche_dure;;
+NATHALIE ARTHAUD;Nathalie Arthaud;extreme_gauche;;
+NICOLAS DUPONT AIGNAN;Nicolas Dupont Aignan;droite_dure;;
+PECRESSE;Valerie Pecresse;droite_modere;;
+PHILIPPE POUTOU;Philippe Poutou;extreme_gauche;;
+POUTOU;Philippe Poutou;extreme_gauche;;
+ROUSSEL;Fabien Roussel;gauche_dure;;
+VALERIE PECRESSE;Valerie Pecresse;droite_modere;;
+YANNICK JADOT;Yannick Jadot;gauche_modere;;
+ZEMMOUR;Eric Zemmour;extreme_droite;;
