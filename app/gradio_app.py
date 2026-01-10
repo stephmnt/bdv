@@ -254,6 +254,56 @@ def blend_with_type_history(
     return blended
 
 
+def _normalize_override_pct(value: float | None) -> float | None:
+    if value is None:
+        return None
+    try:
+        val = float(value)
+    except (TypeError, ValueError):
+        return None
+    if np.isnan(val):
+        return None
+    return float(np.clip(val, 0.0, 100.0))
+
+
+def apply_share_overrides(
+    preds_by_cat: Dict[str, float],
+    overrides_pct: Dict[str, float] | None,
+    ordered: list[str],
+) -> Dict[str, float]:
+    if not overrides_pct:
+        return preds_by_cat
+    fixed = {}
+    for cat, pct in overrides_pct.items():
+        if cat not in ordered:
+            continue
+        norm = _normalize_override_pct(pct)
+        if norm is None:
+            continue
+        fixed[cat] = norm / 100.0
+    if not fixed:
+        return preds_by_cat
+    fixed_sum = sum(fixed.values())
+    if fixed_sum >= 1.0:
+        scaled = {cat: (val / fixed_sum) for cat, val in fixed.items() if fixed_sum > 0}
+        return {cat: float(scaled.get(cat, 0.0)) for cat in ordered}
+    remaining = 1.0 - fixed_sum
+    residual_cats = [cat for cat in ordered if cat not in fixed]
+    base_sum = sum(float(preds_by_cat.get(cat, 0.0)) for cat in residual_cats)
+    if base_sum <= 0 and residual_cats:
+        per_cat = remaining / len(residual_cats)
+        base_alloc = {cat: per_cat for cat in residual_cats}
+    else:
+        base_alloc = {
+            cat: (float(preds_by_cat.get(cat, 0.0)) / base_sum) * remaining
+            for cat in residual_cats
+        }
+    merged = {cat: float(base_alloc.get(cat, 0.0)) for cat in ordered}
+    for cat, val in fixed.items():
+        merged[cat] = float(val)
+    return merged
+
+
 def apply_transfers(
     counts: Dict[str, int],
     total_inscrits: int,
@@ -1114,6 +1164,10 @@ class PredictorBackend:
         target_type: str,
         target_year: int,
         inscrits_override: float | None = None,
+        share_overrides: Dict[str, float] | None = None,
+        abstention_override_pct: float | None = None,
+        blancs_override_pct: float | None = None,
+        nuls_override_pct: float | None = None,
     ) -> Tuple[Dict[str, object] | None, str, str]:
         feature_df, _ = self._get_features_and_refs(target_type, target_year)
         if feature_df.empty:
@@ -1136,6 +1190,7 @@ class PredictorBackend:
         preds_by_cat = {cat: float(preds_share[idx]) for idx, cat in enumerate(CANDIDATE_CATEGORIES)}
         preds_by_cat = blend_with_type_history(preds_by_cat, row.iloc[0], target_type)
         ordered = ordered_categories()
+        preds_by_cat = apply_share_overrides(preds_by_cat, share_overrides, ordered)
         share_vec = np.array([preds_by_cat.get(cat, 0.0) for cat in ordered], dtype=float)
 
         stats = self.event_stats[self.event_stats["code_bv"] == code_bv].sort_values("date_scrutin")
@@ -1207,6 +1262,15 @@ class PredictorBackend:
         turnout_rate = pick_rate("turnout_pct")
         blancs_rate = pick_rate("blancs_pct")
         nuls_rate = pick_rate("nuls_pct")
+        abstention_override = _normalize_override_pct(abstention_override_pct)
+        if abstention_override is not None:
+            turnout_rate = float(np.clip(1.0 - (abstention_override / 100.0), 0.0, 1.0))
+        blancs_override = _normalize_override_pct(blancs_override_pct)
+        if blancs_override is not None:
+            blancs_rate = float(blancs_override / 100.0)
+        nuls_override = _normalize_override_pct(nuls_override_pct)
+        if nuls_override is not None:
+            nuls_rate = float(nuls_override / 100.0)
         if blancs_rate + nuls_rate > turnout_rate and (blancs_rate + nuls_rate) > 0:
             scale = turnout_rate / (blancs_rate + nuls_rate)
             blancs_rate *= scale
@@ -1259,12 +1323,20 @@ class PredictorBackend:
         target_type: str,
         target_year: int,
         inscrits_override: float | None = None,
+        share_overrides: Dict[str, float] | None = None,
+        abstention_override_pct: float | None = None,
+        blancs_override_pct: float | None = None,
+        nuls_override_pct: float | None = None,
     ) -> Tuple[pd.DataFrame, str, str]:
         details, backend_label, meta = self.predict_bureau_details(
             code_bv,
             target_type,
             target_year,
             inscrits_override,
+            share_overrides,
+            abstention_override_pct,
+            blancs_override_pct,
+            nuls_override_pct,
         )
         if details is None:
             return pd.DataFrame(), backend_label, ""
@@ -1359,6 +1431,29 @@ def create_interface() -> gr.Blocks:
                     bureau_dd = gr.Dropdown(choices=bureau_labels, value=default_bv, label="Bureau de vote")
                     target_dd = gr.Dropdown(choices=target_labels, value=default_target, label="Élection cible (type année)")
                     inscrits_in = gr.Number(value=None, label="Inscrits (optionnel)", precision=0)
+                override_inputs: Dict[str, gr.Number] = {}
+                with gr.Accordion("Imputation manuelle (optionnel)", open=False):
+                    gr.Markdown("Abstention / blancs / nuls en % des inscrits.")
+                    with gr.Row():
+                        abstention_in = gr.Number(value=40, label="Abstention (% inscrits)", precision=1)
+                        blancs_in = gr.Number(value=None, label="Blancs (% inscrits)", precision=1)
+                        nuls_in = gr.Number(value=None, label="Nuls (% inscrits)", precision=1)
+                    gr.Markdown("Nuances politiques en % des exprimés (laisser vide pour garder le modèle).")
+                    cats = ordered_categories()
+                    with gr.Row():
+                        for cat in cats[:4]:
+                            override_inputs[cat] = gr.Number(
+                                value=None,
+                                label=DISPLAY_CATEGORY_LABELS.get(cat, cat),
+                                precision=1,
+                            )
+                    with gr.Row():
+                        for cat in cats[4:]:
+                            override_inputs[cat] = gr.Number(
+                                value=None,
+                                label=DISPLAY_CATEGORY_LABELS.get(cat, cat),
+                                precision=1,
+                            )
                 predict_btn = gr.Button("Prédire")
                 source_box = gr.Markdown(value=f"Source des données : {backend_label}")
                 output_df = gr.Dataframe(
@@ -1454,7 +1549,15 @@ def create_interface() -> gr.Blocks:
                 sim_chart = gr.Plot()
                 opportunity_df = gr.Dataframe(headers=OPPORTUNITY_OUTPUT_COLUMNS, label="Bureaux à potentiel (trié)")
 
-        def _predict(bv_label: str, target_label: str, inscrits_override: float | None):
+        def _predict(
+            bv_label: str,
+            target_label: str,
+            inscrits_override: float | None,
+            abstention_override: float | None,
+            blancs_override: float | None,
+            nuls_override: float | None,
+            *cat_overrides: float,
+        ):
             if not bv_label or not target_label:
                 return pd.DataFrame(), "Entrée invalide", None
             code_bv = bureau_map.get(bv_label)
@@ -1465,7 +1568,22 @@ def create_interface() -> gr.Blocks:
                 target_type, target_year = parts[0].lower(), int(parts[1])
             except Exception:
                 target_type, target_year = "municipales", 2026
-            df, backend_label, meta = backend.predict_bureau(code_bv, target_type, target_year, inscrits_override)
+            share_overrides: Dict[str, float] = {}
+            for cat, value in zip(ordered_categories(), cat_overrides):
+                norm = _normalize_override_pct(value)
+                if norm is None:
+                    continue
+                share_overrides[cat] = norm
+            df, backend_label, meta = backend.predict_bureau(
+                code_bv,
+                target_type,
+                target_year,
+                inscrits_override,
+                share_overrides=share_overrides if share_overrides else None,
+                abstention_override_pct=abstention_override,
+                blancs_override_pct=blancs_override,
+                nuls_override_pct=nuls_override,
+            )
             plot = build_bar_chart(
                 df,
                 value_col="nombre",
@@ -1650,7 +1768,9 @@ def create_interface() -> gr.Blocks:
                 opp_df = opp_df.sort_values(["bascule", "gain_cible"], ascending=[False, False])
             return sim_table, sim_plot, opp_df
 
-        predict_btn.click(_predict, inputs=[bureau_dd, target_dd, inscrits_in], outputs=[output_df, source_box, chart])
+        predict_inputs = [bureau_dd, target_dd, inscrits_in, abstention_in, blancs_in, nuls_in]
+        predict_inputs += [override_inputs[cat] for cat in ordered_categories() if cat in override_inputs]
+        predict_btn.click(_predict, inputs=predict_inputs, outputs=[output_df, source_box, chart])
         history_btn.click(
             _history,
             inputs=[history_bureau_dd, history_election_dd],
